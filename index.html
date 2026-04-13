@@ -3,137 +3,348 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy 40th Birthday Jack!</title>
+  <title>Jack Mayo</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Outfit:wght@200;300;400&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --black: #080706;
+      --deep: #0d0b09;
+      --amber: #c4944a;
+      --gold: #d4a55a;
+      --copper: #a67c52;
+      --warm-white: #e6ddd0;
+      --muted: #8a7e6f;
+      --grain-opacity: 0.035;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
     body {
-      min-height: 100vh;
-      min-height: 100svh;
-      overflow-x: hidden;
-      font-family: 'Lato', sans-serif;
+      background: var(--black);
+      color: var(--warm-white);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 200;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    .hero {
-      position: relative;
-      width: 100%;
-      min-height: 100vh;
-      min-height: 100svh;
-      background: url('website_photo.jpg') center 30% / cover no-repeat;
-    }
-
-    .overlay {
-      position: absolute;
+    /* Film grain overlay */
+    .grain {
+      position: fixed;
       inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.15) 0%,
-        rgba(0, 0, 0, 0.05) 40%,
-        rgba(0, 0, 0, 0.6) 100%
+      z-index: 100;
+      pointer-events: none;
+      opacity: var(--grain-opacity);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+
+    /* Radial vignette */
+    .vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse 70% 60% at 50% 45%,
+        transparent 0%,
+        rgba(8, 7, 6, 0.3) 50%,
+        rgba(8, 7, 6, 0.85) 100%
       );
+    }
+
+    /* Warm ambient glow */
+    .glow {
+      position: fixed;
+      z-index: 1;
+      pointer-events: none;
+      width: 600px;
+      height: 600px;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(
+        circle,
+        rgba(196, 148, 74, 0.06) 0%,
+        rgba(196, 148, 74, 0.02) 40%,
+        transparent 70%
+      );
+      animation: glowPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+    }
+
+    /* Smoke canvas */
+    #smoke {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* Main content */
+    .container {
+      position: relative;
+      z-index: 10;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
       align-items: center;
-      padding-bottom: max(12vh, calc(3rem + env(safe-area-inset-bottom, 0px)));
+      justify-content: center;
+      height: 100%;
+      padding: 2rem;
       text-align: center;
     }
 
-    .message {
-      color: #fff;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.8);
-    }
-
-    .message .subtitle {
-      font-family: 'Lato', sans-serif;
+    /* JM Monogram */
+    .monogram {
+      font-family: 'Cormorant Garamond', serif;
       font-weight: 300;
-      font-size: clamp(0.9rem, 2.5vw, 1.4rem);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-      opacity: 0.85;
-    }
-
-    .message h1 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 900;
-      font-size: clamp(3rem, 10vw, 8rem);
+      font-size: clamp(5rem, 14vw, 10rem);
+      letter-spacing: 0.15em;
+      color: var(--amber);
       line-height: 1;
-      letter-spacing: -0.02em;
-    }
-
-    .message h1 .forty {
-      color: #f9d342;
-    }
-
-    .message .name {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: clamp(2rem, 6vw, 5rem);
-      letter-spacing: 0.05em;
-      margin-top: 0.2em;
-    }
-
-    .confetti {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 10;
-    }
-
-    .confetti-piece {
-      position: absolute;
-      width: 10px;
-      height: 14px;
+      margin-bottom: 2.5rem;
       opacity: 0;
-      animation: fall linear infinite;
+      animation: fadeUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+      position: relative;
     }
 
-    @keyframes fall {
-      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(720deg); opacity: 0.3; }
+    .monogram::after {
+      content: '';
+      position: absolute;
+      bottom: -0.15em;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--copper), transparent);
+      animation: lineExpand 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+    }
+
+    @keyframes lineExpand {
+      to { width: 120%; }
+    }
+
+    /* Decorative rule */
+    .rule {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+    }
+
+    .rule span {
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--copper);
+      opacity: 0.5;
+    }
+
+    .rule .diamond {
+      width: 5px;
+      height: 5px;
+      background: var(--amber);
+      transform: rotate(45deg);
+      opacity: 0.7;
+    }
+
+    /* Heading */
+    .heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(1rem, 3vw, 1.6rem);
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--warm-white);
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.1s forwards;
+    }
+
+    /* Tagline */
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(0.95rem, 2.2vw, 1.25rem);
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      max-width: 28ch;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
+    }
+
+    /* Footer */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 1.5rem;
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 2.2s forwards;
+    }
+
+    .footer span {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.4;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-  <div class="hero">
-    <div class="overlay">
-      <div class="message">
-        <div class="subtitle">Celebrating</div>
-        <h1>Happy <span class="forty">40th</span></h1>
-        <div class="name">Jack Mayo</div>
-      </div>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+  <div class="glow"></div>
+  <canvas id="smoke"></canvas>
+
+  <div class="container">
+    <div class="monogram">JM</div>
+    <div class="rule">
+      <span></span>
+      <div class="diamond"></div>
+      <span></span>
     </div>
+    <h1 class="heading">Coming Soon</h1>
+    <p class="tagline">Something worth waiting for</p>
   </div>
 
-  <div class="confetti" id="confetti"></div>
+  <div class="footer">
+    <span>jackmayo.co.uk</span>
+  </div>
 
   <script>
-    const colours = ['#f9d342','#ff6b6b','#4ecdc4','#a8e6cf','#ffeaa7','#dfe6e9','#fd79a8','#6c5ce7'];
-    const container = document.getElementById('confetti');
-    for (let i = 0; i < 60; i++) {
-      const el = document.createElement('div');
-      el.className = 'confetti-piece';
-      el.style.left = Math.random() * 100 + 'vw';
-      el.style.background = colours[Math.floor(Math.random() * colours.length)];
-      el.style.width = (Math.random() * 8 + 6) + 'px';
-      el.style.height = (Math.random() * 10 + 8) + 'px';
-      el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-      el.style.animationDuration = (Math.random() * 4 + 4) + 's';
-      el.style.animationDelay = (Math.random() * 6) + 's';
-      container.appendChild(el);
+    // Smoke particle system
+    const canvas = document.getElementById('smoke');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+    const particles = [];
+    const PARTICLE_COUNT = 50;
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
     }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * w;
+        this.y = h + Math.random() * 100;
+        this.size = Math.random() * 120 + 60;
+        this.speedY = -(Math.random() * 0.3 + 0.1);
+        this.speedX = (Math.random() - 0.5) * 0.2;
+        this.opacity = 0;
+        this.maxOpacity = Math.random() * 0.08 + 0.02;
+        this.fadeIn = true;
+        this.life = 0;
+        this.maxLife = Math.random() * 600 + 400;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.size += 0.15;
+        this.life++;
+
+        if (this.fadeIn) {
+          this.opacity += 0.0008;
+          if (this.opacity >= this.maxOpacity) {
+            this.fadeIn = false;
+          }
+        }
+
+        if (this.life > this.maxLife * 0.6) {
+          this.opacity -= 0.0005;
+        }
+
+        if (this.opacity <= 0 || this.life > this.maxLife) {
+          this.reset();
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        const gradient = ctx.createRadialGradient(
+          this.x, this.y, 0,
+          this.x, this.y, this.size
+        );
+        gradient.addColorStop(0, `rgba(196, 148, 74, ${this.opacity})`);
+        gradient.addColorStop(0.5, `rgba(140, 110, 70, ${this.opacity * 0.4})`);
+        gradient.addColorStop(1, 'rgba(140, 110, 70, 0)');
+        ctx.fillStyle = gradient;
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const p = new Particle();
+      p.y = Math.random() * h;
+      p.life = Math.random() * p.maxLife;
+      p.opacity = Math.random() * p.maxOpacity;
+      p.fadeIn = false;
+      particles.push(p);
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
   </script>
 
 </body>
